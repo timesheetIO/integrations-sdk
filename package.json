@@ -1,0 +1,36 @@
+{
+  "name": "@timesheet/integration-sdk",
+  "version": "0.1.0",
+  "description": "Type-safe contracts and helpers for Timesheet plugin integrations.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "rm -rf dist && tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "test": "jest --runInBand",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "timesheet",
+    "integration",
+    "plugin",
+    "sdk",
+    "typescript"
+  ],
+  "author": "Timesheet",
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.9.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "@types/node": "^20.17.30",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.4.2",
+    "typescript": "^5.8.3"
+  }
+}
