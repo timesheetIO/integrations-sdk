@@ -609,6 +609,8 @@ export interface IntegrationContext<TConfig = Record<string, unknown>> {
     integrationSlug?: string;
     triggerId?: string;
     triggerType?: string;
+    /** Present when trigger mode is 'sync'. Indicates the trigger is sync-aware. */
+    syncMode?: boolean;
   };
 }
 

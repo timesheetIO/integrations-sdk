@@ -129,6 +129,28 @@ export interface ScheduleInput {
   lastRunTime?: string;
 }
 
+// ---- Sync Mode Types ----
+
+export type SyncChangeOp = 'UPSERT' | 'DELETE';
+
+export interface SyncChange {
+  version: number;
+  entityType: string;
+  entityId: string;
+  op: SyncChangeOp;
+  item: Record<string, unknown>;
+  eventTime: number;
+}
+
+export interface SyncModeInput {
+  triggerId: string;
+  mode: 'sync';
+  sinceVersion: number;
+  headVersion: number;
+  changes: SyncChange[];
+  hasMore: boolean;
+}
+
 export interface ReportGeneratedInput {
   reportId: string;
   reportType: string;

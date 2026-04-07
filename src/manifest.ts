@@ -90,6 +90,8 @@ export interface BaseTrigger {
   name: string;
   description?: string;
   configurable?: boolean;
+  /** When set to 'sync', the trigger receives a batch of SyncChange records instead of a single event. */
+  mode?: 'sync';
 }
 
 export interface EventTrigger extends BaseTrigger {
