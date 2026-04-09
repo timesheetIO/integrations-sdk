@@ -85,7 +85,6 @@ export interface PauseListParams extends ListParams {
 
 export interface TeamListParams extends ListParams {
   organizationId?: string;
-  statistics?: boolean;
 }
 
 export interface TaskStatistic {
@@ -611,6 +610,8 @@ export interface IntegrationContext<TConfig = Record<string, unknown>> {
     triggerType?: string;
     /** Present when trigger mode is 'sync'. Indicates the trigger is sync-aware. */
     syncMode?: boolean;
+    /** Map of triggerId → webhook endpoint URL, resolved by the backend runtime. */
+    webhooks?: Record<string, string>;
   };
 }
 
