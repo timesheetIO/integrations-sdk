@@ -90,6 +90,16 @@ export interface BaseTrigger {
   name: string;
   description?: string;
   configurable?: boolean;
+  /**
+   * ID of the action whose handler runs when this trigger fires. The backend
+   * resolves the trigger to `actions[].handler` via this field.
+   */
+  actionId?: string;
+  /**
+   * Event names this trigger listens for. Required on `event` triggers; also
+   * honored on other trigger types that scope themselves to specific events.
+   */
+  events?: string[];
   /** When set to 'sync', the trigger receives a batch of SyncChange records instead of a single event. */
   mode?: 'sync';
 }
