@@ -596,6 +596,8 @@ export interface TimesheetDataClient {
 export interface IntegrationContext<TConfig = Record<string, unknown>> {
   readonly userId: string;
   readonly installationId: string;
+  /** Present when the integration is installed for an organization. */
+  readonly organizationId?: string;
   readonly dataAccess?: IntegrationDataAccess[];
   readonly config: TConfig;
   readonly data: TimesheetDataClient;

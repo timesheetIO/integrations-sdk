@@ -7,7 +7,7 @@ export type JsonValue =
   | { [key: string]: JsonValue };
 
 export interface JsonSchema {
-  type: string;
+  type?: string | string[];
   title?: string;
   description?: string;
   enum?: string[];
