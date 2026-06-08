@@ -598,6 +598,13 @@ export interface IntegrationContext<TConfig = Record<string, unknown>> {
   readonly installationId: string;
   /** Present when the integration is installed for an organization. */
   readonly organizationId?: string;
+  /**
+   * Deployment environment of the plugin runtime. Set to 'sandbox' on
+   * non-production runtimes so plugins can target matching external sandbox
+   * endpoints (for example the QuickBooks sandbox API host). Defaults to
+   * 'production' when unset.
+   */
+  readonly environment?: 'production' | 'sandbox';
   readonly dataAccess?: IntegrationDataAccess[];
   readonly config: TConfig;
   readonly data: TimesheetDataClient;
