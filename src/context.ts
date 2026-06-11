@@ -533,7 +533,7 @@ export interface MappingsClient {
 
 export interface StateClient {
   get<T = unknown>(key: string): Promise<T | null>;
-  set<T = unknown>(key: string, value: T, opts?: { ttlSeconds?: number }): Promise<void>;
+  set<T = unknown>(key: string, value: T, opts?: { ttlSeconds?: number; ifAbsent?: boolean }): Promise<void>;
   delete(key: string): Promise<void>;
 }
 
