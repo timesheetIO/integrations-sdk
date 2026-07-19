@@ -23,6 +23,10 @@
   ],
   "author": "Timesheet",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/timesheetIO/integrations-sdk.git"
+  },
   "engines": {
     "node": ">=16.9.0"
   },
