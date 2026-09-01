@@ -1,6 +1,6 @@
 {
   "name": "@timesheet/integration-sdk",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Type-safe contracts and helpers for Timesheet plugin integrations.",
   "homepage": "https://timesheet.io/en/integrations",
   "main": "dist/index.js",

@@ -6,6 +6,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 Note: while on `0.x`, a caret range pins the minor — `^0.3.0` admits `0.3.x` but not `0.4.0`.
 
+## [0.5.1] - 2026-09-01
+
+### Changed
+- Package metadata for npm: `homepage` now points at timesheet.io, and `author` is
+  normalized to `timesheet.io <support@timesheet.io>` across every Timesheet package.
+- Copyright reassigned from the previous holder to `Timesheet - Mobile Time Tracking OG`,
+  the registered company. The license itself is unchanged.
+
+### Fixed
+- `package-lock.json` had been left at `0.1.0` while `package.json` read `0.5.0`. The publish
+  workflow runs `npm ci`, which rejects a lockfile whose version disagrees, so the two are
+  back in step.
+
+## [0.5.0] - 2026-06-24
+
+### Added
+- `syncGuards`, helpers that stop a plugin echoing a change it just wrote back to the
+  external system, exported from the package root.
+
 ## [0.4.1] - 2026-06-09
 
 ### Added
