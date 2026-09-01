@@ -2,6 +2,7 @@
   "name": "@timesheet/integration-sdk",
   "version": "0.5.0",
   "description": "Type-safe contracts and helpers for Timesheet plugin integrations.",
+  "homepage": "https://timesheet.io/en/integrations",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -21,7 +22,7 @@
     "sdk",
     "typescript"
   ],
-  "author": "Timesheet",
+  "author": "timesheet.io <support@timesheet.io>",
   "license": "MIT",
   "repository": {
     "type": "git",
