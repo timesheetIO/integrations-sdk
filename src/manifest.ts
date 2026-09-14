@@ -46,7 +46,13 @@ export type IntegrationDataAccess =
   | 'colleagues'
   | 'teams'
   | 'tags'
-  | 'settings';
+  | 'settings'
+  /** Invoices (`Document`), read only. */
+  | 'documents'
+  /** Absences plus absence types, read only. */
+  | 'absences'
+  /** Overtime balances plus leave balances, read only. */
+  | 'overtime';
 
 export interface ExternalAuthDefinition {
   id: string;

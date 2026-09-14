@@ -130,7 +130,15 @@ const createContext = (): IntegrationContext<{ enabled: boolean }> => ({
     getTag: async () => {
       throw new Error('not needed');
     },
-    getSettings: async () => ({ lastUpdate: 0 })
+    getSettings: async () => ({ lastUpdate: 0 }),
+    listDocuments: async () => ({ items: [], params: {} }),
+    getDocument: async () => {
+      throw new Error('not found');
+    },
+    listAbsences: async () => ({ items: [], params: {} }),
+    listAbsenceTypes: async () => ({ items: [], params: {} }),
+    listOvertimeBalances: async () => ({ items: [], params: {} }),
+    listLeaveBalances: async () => ({ items: [], params: { year: 2026 } })
   },
   credentials: {
     getAccessToken: async () => 'token',
@@ -149,6 +157,14 @@ const createContext = (): IntegrationContext<{ enabled: boolean }> => ({
     get: async () => null,
     set: async () => {},
     delete: async () => {}
+  },
+  files: {
+    write: async input => ({
+      url: `https://files.example/${input.filename}`,
+      filename: input.filename,
+      contentType: input.contentType,
+      bytes: 0
+    })
   },
   logger: {
     debug: () => {},

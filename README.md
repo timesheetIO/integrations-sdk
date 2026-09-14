@@ -49,7 +49,9 @@ export const syncTask = defineHandler<TaskCreatedInput>(async (input, context) =
 
 `context.data` (`TimesheetDataClient`) wraps the scoped Timesheet API — list/get/create/
 update/delete for projects, tasks, todos, expenses, notes, pauses, plus timer control and
-read access to teams, tags, colleagues, and settings:
+read access to teams, tags, colleagues, and settings. Three further scopes are read only:
+`documents` (invoices), `absences` (absences and absence types) and `overtime` (overtime and
+leave balances). Each scope must be declared in the manifest's `dataAccess`:
 
 ```typescript
 import { defineHandler, SyncModeInput } from '@timesheet/integration-sdk';
@@ -61,6 +63,29 @@ export const fullSync = defineHandler<SyncModeInput>(async (_input, context) => 
   }
 });
 ```
+
+### Writing files for the user
+
+`context.files.write` hands a generated file to the user as a download. Pass the final bytes
+as base64 in the charset the target system expects; the transport stores them unchanged.
+Return the written files from the handler and the web renders download links:
+
+```typescript
+export const buildExport = defineHandler(async (_input, context) => {
+  const csv = 'Belegdatum;Umsatz\n0101;119,00\n';
+  const file = await context.files.write({
+    filename: 'EXTF_Buchungsstapel.csv',
+    contentType: 'text/csv',
+    content: btoa(csv) // ISO-8859-1 passes straight through btoa
+  });
+  return { files: [file], count: 1, warnings: [] };
+});
+```
+
+Allowed content types are `text/csv`, `text/plain`, `application/xml` and
+`application/octet-stream`; the decoded size is capped at 10 MB and the download URL is
+short-lived. `TextEncoder` inside the runtime is UTF-8 only, so a Windows-1252 file needs a
+small map for the `0x80` to `0x9F` range before `btoa`.
 
 ### Credentials, mappings, and state
 

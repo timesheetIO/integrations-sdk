@@ -6,6 +6,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 Note: while on `0.x`, a caret range pins the minor — `^0.3.0` admits `0.3.x` but not `0.4.0`.
 
+## [0.6.0] - 2026-09-14
+
+### Added
+- Three read-only data access scopes: `documents` (invoices), `absences` (absences and
+  absence types) and `overtime` (overtime balances and leave balances). The backend scope
+  filter admits only the list endpoints for these, by exact path and method, and binds
+  organization paths to the installation's organization.
+- `TimesheetDataClient.listDocuments`, `getDocument`, `listAbsences`, `listAbsenceTypes`,
+  `listOvertimeBalances`, `listLeaveBalances` with matching DTOs and list params.
+- `context.files` (`FilesClient`): `write({ filename, contentType, content })` uploads
+  base64 bytes and returns a `WrittenFile` with a short-lived signed URL. Handlers return
+  `{ files: WrittenFile[] }` and the web renders download links. Bytes are stored as given,
+  so the plugin owns the charset.
+
+### Changed
+- `IntegrationContext` gained the required `files` member. Test fixtures that build a typed
+  context literal need a `files` stub.
+
 ## [0.5.1] - 2026-09-01
 
 ### Changed

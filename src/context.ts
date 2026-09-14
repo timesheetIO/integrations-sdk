@@ -508,6 +508,292 @@ export interface MappingRecord {
   lastSyncedAt?: string;
 }
 
+// ---------------------------------------------------------------------------
+// Accounting and payroll data (read only): documents, absences, overtime
+// ---------------------------------------------------------------------------
+
+export interface DocumentListParams extends ListParams {
+  organizationId?: string;
+  organizationUnassigned?: boolean;
+  /** 0 = invoice, 1 = timesheet, 2 = work record. */
+  category?: number;
+  status?: string;
+  template?: boolean;
+  /** Inclusive lower bound on the document date (yyyy-MM-dd). */
+  startDate?: string;
+  /** Inclusive upper bound on the document date (yyyy-MM-dd). */
+  endDate?: string;
+}
+
+/**
+ * Invoice view exposed to plugins. Presentation flags, template fields and QR code
+ * settings are intentionally left out; the export needs identity, dates, party data,
+ * the tax breakdown and totals. Monetary values are decimal strings.
+ */
+export interface DocumentDto {
+  id: string;
+  user?: string;
+  organizationId?: string;
+  /** 0 = invoice, 1 = timesheet, 2 = work record. Credit notes are invoices with `eInvoiceDocumentType` = CREDIT_NOTE. */
+  category: number;
+  status?: number;
+  name?: string;
+  date: string;
+  deliveryDate?: string;
+  dueDate?: string;
+  invoiceId?: string;
+  invoiceSeriesId?: string;
+  paid?: boolean;
+  fullyPaid?: boolean;
+  partiallyPaid?: boolean;
+  payment?: string;
+  paymentDate?: string;
+  paymentMethod?: string;
+  paymentTermDays?: number;
+  cashDiscountRate?: string;
+  cashDiscountDays?: number;
+  company?: string;
+  companyVatId?: string;
+  companyTaxNumber?: string;
+  companyRegistrationNumber?: string;
+  customer?: string;
+  customerId?: string;
+  customerVatId?: string;
+  customerTaxNumber?: string;
+  customerOrderNumber?: string;
+  customerAddressLine1?: string;
+  customerAddressLine2?: string;
+  customerAddressLine3?: string;
+  customerAddressLine4?: string;
+  eInvoiceType?: string;
+  eInvoiceDocumentType?: string;
+  invoiceTypeCode?: string;
+  eInvoiceCurrency?: string;
+  subtotal?: string;
+  taskSubtotal?: string;
+  expenseSubtotal?: string;
+  tax?: string;
+  taxValue?: string;
+  taxSecond?: string;
+  taxSecondValue?: string;
+  showSecondTax?: boolean;
+  discount?: string;
+  discountValue?: string;
+  discountSecondValue?: string;
+  total?: string;
+  isReverseCharge?: boolean;
+  reverseChargeRate?: string;
+  taxExemptionReason?: string;
+  costCenter?: string;
+  projectReference?: string;
+  orderReference?: string;
+  paymentReference?: string;
+  contractReference?: string;
+  procurementReference?: string;
+  originalInvoiceNumber?: string;
+  originalInvoiceDate?: string;
+  created?: number;
+  lastUpdate?: number;
+}
+
+export interface DocumentList {
+  items: DocumentDto[];
+  params: DocumentListParams;
+}
+
+export interface AbsenceListParams extends ListParams {
+  contractId?: string;
+  userId?: string;
+  userIds?: string[];
+  contractIds?: string[];
+  absenceTypeId?: string;
+  status?: string;
+  statuses?: string[];
+  /** Inclusive lower bound (yyyy-MM-dd). */
+  startDate?: string;
+  /** Inclusive upper bound (yyyy-MM-dd). */
+  endDate?: string;
+  year?: number;
+  teamId?: string;
+  teamIds?: string[];
+  excludeRejectedCancelled?: boolean;
+}
+
+export interface AbsenceTypeDto {
+  id: string;
+  organizationId?: string;
+  code?: string;
+  i18nKey?: string;
+  name?: string;
+  description?: string;
+  color?: number;
+  icon?: string;
+  paid?: boolean;
+  requiresApproval?: boolean;
+  requiresDocumentation?: boolean;
+  affectsOvertime?: boolean;
+  deductsFromQuota?: boolean;
+  countryCode?: string;
+  systemType?: boolean;
+  active?: boolean;
+  sortOrder?: number;
+  created?: number;
+  lastUpdate?: number;
+}
+
+export interface AbsenceDto {
+  id: string;
+  contractId?: string;
+  member?: Member;
+  absenceTypeId?: string;
+  absenceType?: AbsenceTypeDto;
+  startDateTime: string;
+  endDateTime: string;
+  fullDay?: boolean;
+  totalDays?: string;
+  totalHours?: string;
+  reason?: string;
+  status?: string;
+  requestedAt?: number;
+  approvedAt?: number;
+  approvedBy?: string;
+  cancelledAt?: number;
+  created?: number;
+  lastUpdate?: number;
+}
+
+export interface AbsenceList {
+  items: AbsenceDto[];
+  params: AbsenceListParams;
+}
+
+export interface AbsenceTypeListParams extends ListParams {
+  active?: boolean;
+}
+
+export interface AbsenceTypeList {
+  items: AbsenceTypeDto[];
+  params: AbsenceTypeListParams;
+}
+
+export interface OvertimeBalanceListParams extends ListParams {
+  contractId?: string;
+  /** 'me' or a user id. */
+  user?: string;
+  status?: string;
+  /** Inclusive lower bound on the period start (yyyy-MM-dd). */
+  startDate?: string;
+  /** Inclusive upper bound on the period start (yyyy-MM-dd). */
+  endDate?: string;
+  /** Month of the period start (1-12), independent of year. */
+  month?: number;
+}
+
+export interface OvertimeBalanceDto {
+  id: string;
+  contractId?: string;
+  member?: Member;
+  periodType?: string;
+  periodStart: string;
+  periodEnd: string;
+  targetMinutes?: number;
+  actualMinutes?: number;
+  overtimeMinutes?: number;
+  undertimeMinutes?: number;
+  compensatedMinutes?: number;
+  adjustmentMinutes?: number;
+  remainingMinutes?: number;
+  expiredMinutes?: number;
+  flextimeBalanceMinutes?: number;
+  flextimeCarryOverMinutes?: number;
+  regularMinutes?: number;
+  nightMinutes?: number;
+  weekendMinutes?: number;
+  holidayMinutes?: number;
+  standbyMinutes?: number;
+  earlyShiftMinutes?: number;
+  lateShiftMinutes?: number;
+  nightShiftMinutes?: number;
+  overtimeTier1Minutes?: number;
+  overtimeTier2Minutes?: number;
+  overtimeTier3Minutes?: number;
+  allInIncludedMinutes?: number;
+  allInExcessMinutes?: number;
+  grossOvertimeValue?: string;
+  surchargeValue?: string;
+  totalValue?: string;
+  monetaryValueApplicable?: boolean;
+  currency?: string;
+  status?: string;
+  created?: number;
+  lastUpdate?: number;
+}
+
+export interface OvertimeBalanceList {
+  items: OvertimeBalanceDto[];
+  params: OvertimeBalanceListParams;
+}
+
+export interface LeaveBalanceListParams extends ListParams {
+  /** Required by the organization endpoint. */
+  year: number;
+  contractId?: string;
+}
+
+export interface LeaveBalanceDto {
+  id: string;
+  contractId?: string;
+  member?: Member;
+  year: number;
+  entitledDays?: string;
+  carriedOverDays?: string;
+  additionalDays?: string;
+  totalAvailableDays?: string;
+  usedDays?: string;
+  pendingDays?: string;
+  remainingDays?: string;
+  carryOverExpiresAt?: string;
+  expiredDays?: string;
+  calculatedAt?: number;
+  created?: number;
+  lastUpdate?: number;
+}
+
+export interface LeaveBalanceList {
+  items: LeaveBalanceDto[];
+  params: LeaveBalanceListParams;
+}
+
+// ---------------------------------------------------------------------------
+// File output
+// ---------------------------------------------------------------------------
+
+export interface FileWriteInput {
+  filename: string;
+  /** One of text/csv, text/plain, application/xml, application/octet-stream. */
+  contentType: string;
+  /** Base64 of the final bytes, already in the target charset. The transport never re-encodes. */
+  content: string;
+}
+
+export interface WrittenFile {
+  /** Short-lived signed download URL. */
+  url: string;
+  filename: string;
+  contentType: string;
+  bytes: number;
+  /** ISO timestamp after which `url` stops working. */
+  expiresAt?: string;
+}
+
+/**
+ * Hands a generated file to the user as a download. A handler may call `write` more
+ * than once and return `{ files: WrittenFile[] }`; the web renders the list.
+ */
+export interface FilesClient {
+  write(input: FileWriteInput): Promise<WrittenFile>;
+}
+
 export interface CredentialsClient {
   getAccessToken(provider: string): Promise<string>;
   getApiKey(provider: string): Promise<string>;
@@ -591,6 +877,29 @@ export interface TimesheetDataClient {
   getTag(id: string): Promise<TagDto>;
 
   getSettings(): Promise<SettingsDto>;
+
+  /** Requires the `documents` scope. */
+  listDocuments(params?: DocumentListParams): Promise<DocumentList>;
+  /** Requires the `documents` scope. */
+  getDocument(id: string): Promise<DocumentDto>;
+
+  /**
+   * Requires the `absences` scope. On an organization installation this reads every
+   * member's absences through the organization search; on a profile installation it
+   * reads the installing user's own absences.
+   */
+  listAbsences(params?: AbsenceListParams): Promise<AbsenceList>;
+  /** Requires the `absences` scope and an organization installation. */
+  listAbsenceTypes(params?: AbsenceTypeListParams): Promise<AbsenceTypeList>;
+
+  /** Requires the `overtime` scope and an organization installation. */
+  listOvertimeBalances(params?: OvertimeBalanceListParams): Promise<OvertimeBalanceList>;
+  /**
+   * Requires the `overtime` scope. On an organization installation this reads the
+   * organization's balances for `params.year`; on a profile installation it reads the
+   * installing user's own balances.
+   */
+  listLeaveBalances(params: LeaveBalanceListParams): Promise<LeaveBalanceList>;
 }
 
 export interface IntegrationContext<TConfig = Record<string, unknown>> {
@@ -611,6 +920,7 @@ export interface IntegrationContext<TConfig = Record<string, unknown>> {
   readonly credentials: CredentialsClient;
   readonly mappings: MappingsClient;
   readonly state: StateClient;
+  readonly files: FilesClient;
   readonly logger: Logger;
   readonly metadata?: {
     integrationId?: string;
